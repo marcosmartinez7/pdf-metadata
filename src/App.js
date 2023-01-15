@@ -26,7 +26,7 @@ function App() {
             console.log(pdfDoc.getInfoDict());
 
             console.log(pdfDoc.getKeywords());
-            console.log(pdfDoc.getInfoDict().get(PDFName.of("Custom"))); // output: "Value custom"
+            console.log(pdfDoc.getInfoDict().get(PDFName.of("Custom")));
         };
         fileReader.readAsArrayBuffer(file);
     };
@@ -38,7 +38,7 @@ function App() {
                 onChange={handleFileInput}
                 accept="application/pdf"
             />
-            <button onClick={handleExtract}>Extract Keywords</button>
+            <button onClick={handleExtract}>Extract Metadata</button>
         </div>
     );
 }
