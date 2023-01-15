@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { PDFDocument } from "pdf-lib";
+import { useState } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [file, setFile] = useState(null);
+
+    const handleFileInput = (event) => {
+        const file = event.target.files[0];
+        setFile(file);
+    };
+
+    const handleExtract = async () => {
+        if (!file) {
+            console.log("Please select a file first");
+            return;
+        }
+        const fileReader = new FileReader();
+        fileReader.onload = async () => {
+            const typedArray = new Uint8Array(fileReader.result);
+
+            // Open a PDF document from the Uint8Array
+            const pdfDoc = await PDFDocument.load(typedArray);
+            console.dir(pdfDoc);
+            console.log(pdfDoc.getTitle());
+            console.log(pdfDoc.getInfoDict());
+
+            console.log(pdfDoc.getKeywords());
+        };
+        fileReader.readAsArrayBuffer(file);
+    };
+
+    return (
+        <div>
+            <input
+                type="file"
+                onChange={handleFileInput}
+                accept="application/pdf"
+            />
+            <button onClick={handleExtract}>Extract Keywords</button>
+        </div>
+    );
 }
 
 export default App;
