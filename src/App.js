@@ -1,6 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, PDFName } from "pdf-lib";
 import { useState } from "react";
 
 function App() {
@@ -27,6 +26,7 @@ function App() {
             console.log(pdfDoc.getInfoDict());
 
             console.log(pdfDoc.getKeywords());
+            console.log(pdfDoc.getInfoDict().get(PDFName.of("Custom"))); // output: "Value custom"
         };
         fileReader.readAsArrayBuffer(file);
     };
