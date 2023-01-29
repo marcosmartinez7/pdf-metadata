@@ -1,7 +1,7 @@
 import "./App.css";
 import { PDFDocument, PDFName } from "pdf-lib";
 import { useState } from "react";
-
+import download from "downloadjs";
 function App() {
     const [file, setFile] = useState(null);
 
@@ -32,6 +32,10 @@ function App() {
                 pdfDoc.getInfoDict().get(PDFName.of("Custom"))
             );
 
+            console.log(
+                "Clinical site",
+                pdfDoc.getInfoDict().get(PDFName.of("Clinical site"))
+            );
             console.log("Changing keywords");
 
             const oldKeywords = pdfDoc.getKeywords();
@@ -40,10 +44,19 @@ function App() {
             console.log(pdfDoc.getKeywords());
 
             console.log("Adding new property");
-            pdfDoc.getInfoDict().set(PDFName.of("Clinical site"), "Hospital");
+            //  pdfDoc.getInfoDict().set(PDFName.of("Clinical site"), "Hospital");
             console.log(
                 "Clinical site",
                 pdfDoc.getInfoDict().get(PDFName.of("Clinical site"))
+            );
+
+            const pdfBytes = await pdfDoc.save();
+
+            // Trigger the browser to download the PDF document
+            download(
+                pdfBytes,
+                "pdf-lib_form_creation_example.pdf",
+                "application/pdf"
             );
         };
         fileReader.readAsArrayBuffer(file);
@@ -51,11 +64,7 @@ function App() {
 
     return (
         <div>
-            <input
-                type="file"
-                onChange={handleFileInput}
-                accept="application/pdf"
-            />
+            <input type="file" onChange={handleFileInput} />
             <button onClick={handleExtract}>Extract Metadata</button>
         </div>
     );
