@@ -1,5 +1,5 @@
 import "./App.css";
-import { PDFDocument, PDFName } from "pdf-lib";
+import { PDFDocument, PDFName, PDFString } from "pdf-lib";
 import { useState } from "react";
 import download from "downloadjs";
 function App() {
@@ -44,7 +44,9 @@ function App() {
             console.log(pdfDoc.getKeywords());
 
             console.log("Adding new property");
-            //  pdfDoc.getInfoDict().set(PDFName.of("Clinical site"), "Hospital");
+            pdfDoc
+                .getInfoDict()
+                .set(PDFName.of("Clinical site"), PDFString.of("Hospital"));
             console.log(
                 "Clinical site",
                 pdfDoc.getInfoDict().get(PDFName.of("Clinical site"))
